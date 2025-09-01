@@ -1,6 +1,5 @@
 package com.stefano.draiver.dtos.driver;
 
-import com.stefano.draiver.domain.enums.DriverRate;
 import com.stefano.draiver.domain.enums.DriverStatus;
 import com.stefano.draiver.domain.enums.License;
 import jakarta.validation.constraints.DecimalMax;
