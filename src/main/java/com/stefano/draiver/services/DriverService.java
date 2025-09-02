@@ -4,9 +4,9 @@ import com.stefano.draiver.domain.entities.BaseEntity;
 import com.stefano.draiver.domain.entities.Driver;
 import com.stefano.draiver.domain.enums.DriverStatus;
 import com.stefano.draiver.dtos.driver.PatchRequestDriver;
+import com.stefano.draiver.exceptions.ResourceNotFoundException;
 import com.stefano.draiver.mappers.DriverMapper;
 import com.stefano.draiver.repositories.interfaces.DriverRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.data.domain.Page;
@@ -37,10 +37,10 @@ public class DriverService extends BaseService<Driver>{
     public Driver get(UUID id) {
         return repository.findById(id)
                 .filter(BaseEntity::isActive)
-                .orElseThrow(() -> new EntityNotFoundException("Driver not found: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
-    public Driver patch(UUID id, PatchRequestDriver patchDriverRequest) {
+    public Driver update(UUID id, PatchRequestDriver patchDriverRequest) {
         Driver driver = get(id);
         driverMapper.patch(driver, patchDriverRequest);
         update(driver);
@@ -58,5 +58,4 @@ public class DriverService extends BaseService<Driver>{
     public void beforeUpdate(Driver driver) {
         driver.setUpdatedAt(LocalDateTime.now());
     }
-
 }

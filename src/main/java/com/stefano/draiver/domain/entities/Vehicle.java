@@ -1,6 +1,8 @@
 package com.stefano.draiver.domain.entities;
 
+import com.stefano.draiver.domain.enums.MoveStatus;
 import com.stefano.draiver.domain.enums.VehicleType;
+import com.stefano.draiver.exceptions.BusinessRuleException;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -12,12 +14,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,6 +33,7 @@ public class Vehicle extends BaseEntity {
     private String vin;
     @Enumerated(EnumType.STRING)
     private VehicleType type;
+    @Builder.Default
     @OneToMany(mappedBy = "vehicle", fetch = FetchType.LAZY)
-    private List<Move> moves;
+    private List<Move> moves = new ArrayList<>();
 }

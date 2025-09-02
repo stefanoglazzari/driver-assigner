@@ -53,10 +53,11 @@ public class DriverMapper {
     public Driver toEntity(CreateRequestDriver req) {
         if (req == null) return null;
 
-        Driver driver = new Driver();
-        driver.setName(req.name());
-        driver.setLicense(req.license());
-        driver.setStatus(req.status());
+        Driver driver = Driver.builder()
+                .name(req.name())
+                .license(req.license())
+                .status(req.status())
+                .build();
 
         if (req.lat() != null || req.lon() != null) {
             driver.setLocation(new Location(req.lat(), req.lon()));

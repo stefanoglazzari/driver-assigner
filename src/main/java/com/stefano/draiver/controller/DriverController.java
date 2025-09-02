@@ -50,7 +50,7 @@ public class DriverController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<DriverResponse> patch(@PathVariable UUID id, @Valid @RequestBody PatchRequestDriver req) {
-        Driver updated = service.patch(id, req);
+        Driver updated = service.update(id, req);
         return  ResponseEntity
                 .ok()
                 .body( mapper.toResponse(updated));

@@ -11,14 +11,18 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
+@SuperBuilder
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,6 +37,7 @@ public class Driver extends BaseEntity {
     private DriverStatus status;
     @Embedded
     private Location location;
+    @Builder.Default
     @OneToMany(mappedBy = "driver", fetch = FetchType.LAZY)
-    private List<Move> moves;
+    private List<Move> moves = new ArrayList<>();
 }

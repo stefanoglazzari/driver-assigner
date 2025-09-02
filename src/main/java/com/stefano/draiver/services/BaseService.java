@@ -1,8 +1,8 @@
 package com.stefano.draiver.services;
 
 import com.stefano.draiver.domain.entities.BaseEntity;
+import com.stefano.draiver.exceptions.ResourceNotFoundException;
 import com.stefano.draiver.repositories.jpa.BaseRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
@@ -57,11 +57,10 @@ public abstract class BaseService<T extends BaseEntity> {
     @Transactional
     public void delete( UUID entityId) {
         T entity = getRepository().findById(entityId).filter(BaseEntity::isActive).orElseThrow(
-                () -> new EntityNotFoundException("Driver not found: " + entityId));
+                () -> new ResourceNotFoundException(entityId));
 
         delete(entity);
     }
-
 
     protected void beforeCreate(T entity) {}
 
