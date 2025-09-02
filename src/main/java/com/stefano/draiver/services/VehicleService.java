@@ -1,5 +1,6 @@
 package com.stefano.draiver.services;
 
+import aj.org.objectweb.asm.commons.Remapper;
 import com.stefano.draiver.domain.entities.BaseEntity;
 import com.stefano.draiver.domain.entities.Owner;
 import com.stefano.draiver.domain.entities.Vehicle;
@@ -32,6 +33,11 @@ public class VehicleService extends BaseService<Vehicle>{
     @Transactional(readOnly = true)
     public Page<Vehicle> list(Pageable pageable) {
         return repository.findByDeletedAtIsNull(pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Vehicle> listByOwner(Pageable pageable, UUID ownerId) {
+        return repository.findByDeletedAtIsNullAndOwnerId(pageable, ownerId);
     }
 
     @Transactional

@@ -4,8 +4,11 @@ import com.stefano.draiver.domain.entities.Owner;
 import com.stefano.draiver.dtos.owner.CreateRequestOwner;
 import com.stefano.draiver.dtos.owner.OwnerResponse;
 import com.stefano.draiver.dtos.owner.PatchRequestOwner;
+import com.stefano.draiver.dtos.vehicle.VehicleResponse;
 import com.stefano.draiver.mappers.OwnerMapper;
+import com.stefano.draiver.mappers.VehicleMapper;
 import com.stefano.draiver.services.OwnerService;
+import com.stefano.draiver.services.VehicleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -30,6 +33,8 @@ public class OwnerController {
 
     private final OwnerService service;
     private final OwnerMapper mapper;
+    private final VehicleService vehicleService;
+    private final VehicleMapper vehicleMapper;
 
     @GetMapping
     public Page<OwnerResponse> list(
@@ -43,6 +48,14 @@ public class OwnerController {
         return  ResponseEntity
                 .ok()
                 .body(  mapper.toResponse(service.get(id)));
+    }
+
+    @GetMapping("/{id}/vehicles")
+    public Page<VehicleResponse> list(
+            @PathVariable UUID id,
+            Pageable pageable
+    ) {
+        return vehicleService.listByOwner(pageable, id).map(vehicleMapper::toResponse);
     }
 
     @PostMapping

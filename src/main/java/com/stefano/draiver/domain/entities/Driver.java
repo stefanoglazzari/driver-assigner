@@ -4,6 +4,7 @@ import com.stefano.draiver.domain.enums.DriverRate;
 import com.stefano.draiver.domain.enums.DriverStatus;
 import com.stefano.draiver.domain.enums.License;
 import com.stefano.draiver.domain.values.Location;
+import com.stefano.draiver.exceptions.BusinessRuleException;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -40,4 +41,10 @@ public class Driver extends BaseEntity {
     @Builder.Default
     @OneToMany(mappedBy = "driver", fetch = FetchType.LAZY)
     private List<Move> moves = new ArrayList<>();
+
+    @Override
+    public void validateOnDelete() {
+        if (DriverStatus.ON_TRIP.equals(status))
+            throw new BusinessRuleException("Driver can not be deleted because it`s on trip");
+    }
 }
